@@ -22,8 +22,6 @@ _start (void);
 // handler routines in your application code.
 // ----------------------------------------------------------------------------
 
-// Gallium - Disabled (Use the one in Startup/startup_stm32l475vgtx.s)
-#if 0
 #if defined(DEBUG)
 
 // The DEBUG version is not naked, but has a proper stack frame,
@@ -51,7 +49,6 @@ Reset_Handler(void)
   }
 
 #endif
-#endif // Gallium
 
 void __attribute__ ((section(".after_vectors"),weak))
 NMI_Handler (void)
