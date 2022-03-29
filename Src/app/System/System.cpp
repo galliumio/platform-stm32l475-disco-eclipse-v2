@@ -125,7 +125,6 @@ QState System::Root(System * const me, QEvt const * const e) {
             me->SendCfm(new SystemStartCfm(ERROR_STATE, me->GetHsmn()), req);
             return Q_HANDLED();
         }
-        // Test only.
         case SYSTEM_RESTART_REQ:
         case SYSTEM_STOP_REQ: {
             EVENT(e);
@@ -152,7 +151,6 @@ QState System::Stopped(System * const me, QEvt const * const e) {
             me->SendCfm(new SystemStopCfm(ERROR_SUCCESS), req);
             return Q_HANDLED();
         }
-        // Test only.
         case SYSTEM_RESTART_REQ:
         case SYSTEM_START_REQ: {
             EVENT(e);
@@ -259,7 +257,7 @@ QState System::Starting1(System * const me, QEvt const * const e) {
             ERROR_EVENT(cfm);
             bool allReceived;
             if (!me->CheckCfm(cfm, allReceived)) {
-                me->Raise(new Failed(me->GetHsmn(), cfm.GetError(), cfm.GetOrigin(), cfm.GetReason()));
+                me->Raise(new Failed(cfm.GetError(), cfm.GetOrigin(), cfm.GetReason()));
             } else if (allReceived) {
                 me->Raise(new Evt(NEXT));
             }
@@ -289,7 +287,7 @@ QState System::Starting2(System * const me, QEvt const * const e) {
             ErrorEvt const &cfm = ERROR_EVT_CAST(*e);
             bool allReceived;
             if (!me->CheckCfm(cfm, allReceived)) {
-                me->Raise(new Failed(me->GetHsmn(), cfm.GetError(), cfm.GetOrigin(), cfm.GetReason()));
+                me->Raise(new Failed(cfm.GetError(), cfm.GetOrigin(), cfm.GetReason()));
             } else if (allReceived) {
                 me->Raise(new Evt(NEXT));
             }
@@ -324,7 +322,7 @@ QState System::Starting3(System * const me, QEvt const * const e) {
             ErrorEvt const &cfm = ERROR_EVT_CAST(*e);
             bool allReceived;
             if (!me->CheckCfm(cfm, allReceived)) {
-                me->Raise(new Failed(me->GetHsmn(), cfm.GetError(), cfm.GetOrigin(), cfm.GetReason()));
+                me->Raise(new Failed(cfm.GetError(), cfm.GetOrigin(), cfm.GetReason()));
             } else if (allReceived) {
                 me->Raise(new Evt(DONE));
             }
@@ -352,7 +350,6 @@ QState System::Stopping(System * const me, QEvt const * const e) {
         case Q_INIT_SIG: {
             return Q_TRAN(&System::Stopping1);
         }
-        // Test only.
         case SYSTEM_RESTART_REQ:
         case SYSTEM_STOP_REQ: {
             EVENT(e);
@@ -390,7 +387,7 @@ QState System::Stopping1(System * const me, QEvt const * const e) {
             ErrorEvt const &cfm = ERROR_EVT_CAST(*e);
             bool allReceived;
             if (!me->CheckCfm(cfm, allReceived)) {
-                me->Raise(new Failed(me->GetHsmn(), cfm.GetError(), cfm.GetOrigin(), cfm.GetReason()));
+                me->Raise(new Failed(cfm.GetError(), cfm.GetOrigin(), cfm.GetReason()));
             } else if (allReceived) {
                 me->Raise(new Evt(NEXT));
             }
@@ -436,7 +433,7 @@ QState System::Stopping2(System * const me, QEvt const * const e) {
             ErrorEvt const &cfm = ERROR_EVT_CAST(*e);
             bool allReceived;
             if (!me->CheckCfm(cfm, allReceived)) {
-                me->Raise(new Failed(me->GetHsmn(), cfm.GetError(), cfm.GetOrigin(), cfm.GetReason()));
+                me->Raise(new Failed(cfm.GetError(), cfm.GetOrigin(), cfm.GetReason()));
             } else if (allReceived) {
                 me->Raise(new Evt(DONE));
             }
